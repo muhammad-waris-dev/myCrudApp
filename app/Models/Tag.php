@@ -9,7 +9,6 @@ class Tag extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
-
     // Relationship with Post (Many-to-Many)
     public function posts()
     {

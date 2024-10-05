@@ -1,15 +1,23 @@
+@extends('admin.layout.app');
+
+
+@section('content')
+    
+
+
+<h2>Create New Post</h2>
 <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <!-- Title Input -->
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $post->title ?? '') }}">
+        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $post->title ?? '') }}" required>
     </div>
 
     <!-- Content Input -->
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea name="content" id="content" class="form-control">{{ old('content', $post->content ?? '') }}</textarea>
+        <textarea name="content" id="content" class="form-control" required>{{ old('content', $post->content ?? '') }}</textarea>
     </div>
 
     <!-- Category Dropdown -->
@@ -55,3 +63,4 @@
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+@endsection

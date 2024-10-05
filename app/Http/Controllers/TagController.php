@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Http\db;
 
 class TagController extends Controller
 {
@@ -13,14 +14,14 @@ class TagController extends Controller
     public function index() {
         // Fetch all tags
         $tags = Tag::all();
-        return view('tags.index', compact('tags'));
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        return view('tags.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -36,9 +37,10 @@ class TagController extends Controller
         Tag::create([
             'name' => $request->name,
         ]);
+        
 
         // Redirect to the index page with a success message
-        return redirect()->route('tags.index')->with('success', 'Tag created successfully!');   
+        return redirect('/tags')->with('success', 'Tag created successfully!');   
     }
 
     /**
@@ -56,7 +58,7 @@ class TagController extends Controller
     {
         // Find the tag by id
         $tag = Tag::findOrFail($id);
-        return view('tags.edit', compact('tag'));
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -75,19 +77,19 @@ class TagController extends Controller
         ]);
 
         // Redirect to the index page with a success message
-        return redirect()->route('tags.index')->with('success', 'Tag updated successfully!');
+        return redirect('/tags')->with('success', 'Tag updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tag $id)
+    public function destroy($id)
     {
     // Find and delete the tag
     $tag = Tag::findOrFail($id);
     $tag->delete();
 
     // Redirect to the index page with a success message
-    return redirect()->route('tags.index')->with('success', 'Tag deleted successfully!');  
+    return redirect('/tags')->with('success', 'Tag deleted successfully!');  
   }
 }

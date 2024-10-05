@@ -13,14 +13,15 @@ class CategoryController extends Controller
     public function index() {
         // Fetch all categories
         $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $name = "Waris";
+        return view('admin.categories.index', compact('categories','name'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -55,7 +56,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -63,8 +64,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+        ]);
+
+        // Find and update the tag
+        $tag = Category::findOrFail($id);
+        $tag->update([
+            'name' => $request->name,
+        ]);
+
+        // Redirect to the index page with a success message
+        return redirect('/categories')->with('success', 'Tag updated successfully!');
     }
 
     /**
@@ -76,6 +87,6 @@ class CategoryController extends Controller
         $category->delete();
 
         // Redirect to the index page with a success message
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully!');
+        return redirect('categories')->with('success', 'Category deleted successfully!');
     }
 }
